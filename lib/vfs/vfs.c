@@ -1,9 +1,8 @@
 /*
    Virtual File System switch code
 
-   Copyright (C) 1995, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005,
-   2007, 2011, 2013
-   The Free Software Foundation, Inc.
+   Copyright (C) 1995-2014
+   Free Software Foundation, Inc.
 
    Written by: 1995 Miguel de Icaza
    Jakub Jelinek, 1995

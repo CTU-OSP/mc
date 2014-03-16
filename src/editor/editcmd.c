@@ -1,13 +1,12 @@
 /*
    Editor high level editing commands
 
-   Copyright (C) 1996, 1997, 1998, 2001, 2002, 2003, 2004, 2005, 2006,
-   2007, 2011, 2012, 2013
-   The Free Software Foundation, Inc.
+   Copyright (C) 1996-2014
+   Free Software Foundation, Inc.
 
    Written by:
    Paul Sheer, 1996, 1997
-   Andrew Borodin <aborodin@vmail.ru>, 2012, 2013
+   Andrew Borodin <aborodin@vmail.ru>, 2012-2014
    Ilia Maslakov <il.smind@gmail.com>, 2012
 
    This file is part of the Midnight Commander.
@@ -159,11 +158,12 @@ edit_save_file (WEdit * edit, const vfs_path_t * filename_vpath)
     char *p;
     gchar *tmp;
     off_t filelen = 0;
-    int this_save_mode, fd = -1;
+    int this_save_mode, rv, fd = -1;
     vfs_path_t *real_filename_vpath;
     vfs_path_t *savename_vpath = NULL;
     const char *start_filename;
     const vfs_path_element_t *vpath_element;
+    struct stat sb;
 
     vpath_element = vfs_path_get_by_index (filename_vpath, 0);
     if (vpath_element == NULL)
@@ -198,13 +198,10 @@ edit_save_file (WEdit * edit, const vfs_path_t * filename_vpath)
             mc_close (fd);
     }
 
-    if (this_save_mode == EDIT_QUICK_SAVE && !edit->skip_detach_prompt)
+    rv = mc_stat (real_filename_vpath, &sb);
+    if (rv == 0)
     {
-        int rv;
-        struct stat sb;
-
-        rv = mc_stat (real_filename_vpath, &sb);
-        if (rv == 0 && sb.st_nlink > 1)
+        if (this_save_mode == EDIT_QUICK_SAVE && !edit->skip_detach_prompt && sb.st_nlink > 1)
         {
             rv = edit_query_dialog3 (_("Warning"),
                                      _("File has hard-links. Detach before saving?"),
@@ -224,7 +221,7 @@ edit_save_file (WEdit * edit, const vfs_path_t * filename_vpath)
         }
 
         /* Prevent overwriting changes from other editor sessions. */
-        if (rv == 0 && edit->stat1.st_mtime != 0 && edit->stat1.st_mtime != sb.st_mtime)
+        if (edit->stat1.st_mtime != 0 && edit->stat1.st_mtime != sb.st_mtime)
         {
             /* The default action is "Cancel". */
             query_set_sel (1);
@@ -401,7 +398,7 @@ edit_check_newline (const edit_buffer_t * buf)
     return !(option_check_nl_at_eof && buf->size > 0
              && edit_buffer_get_byte (buf, buf->size - 1) != '\n'
              && edit_query_dialog2 (_("Warning"),
-                                    _("The file you are saving is not finished with a newline"),
+                                    _("The file you are saving does not end with a newline."),
                                     _("C&ontinue"), _("&Cancel")) != 0);
 }
 
@@ -2775,9 +2772,6 @@ edit_ok_to_exit (WEdit * edit)
 
     if (!mc_global.midnight_shutdown)
     {
-        if (!edit_check_newline (&edit->buffer))
-            return FALSE;
-
         query_set_sel (2);
 
         msg = g_strdup_printf (_("File %s was modified.\nSave before close?"), fname);
@@ -2799,6 +2793,8 @@ edit_ok_to_exit (WEdit * edit)
     switch (act)
     {
     case 0:                    /* Yes */
+        if (!mc_global.midnight_shutdown && !edit_check_newline (&edit->buffer))
+            return FALSE;
         edit_push_markers (edit);
         edit_set_markers (edit, 0, 0, 0, 0);
         if (!edit_save_cmd (edit) || mc_global.midnight_shutdown)

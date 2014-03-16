@@ -2,8 +2,8 @@
    Interface to the terminal controlling library.
    Slang wrapper.
 
-   Copyright (C) 2005, 2006, 2007, 2009, 2010, 2011
-   The Free Software Foundation, Inc.
+   Copyright (C) 2005-2014
+   Free Software Foundation, Inc.
 
    Written by:
    Andrew Borodin <aborodin@vmail.ru>, 2009

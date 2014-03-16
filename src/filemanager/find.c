@@ -1,9 +1,8 @@
 /*
    Find file command for the Midnight Commander
 
-   Copyright (C) 1995, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005,
-   2006, 2007, 2011, 2013
-   The Free Software Foundation, Inc.
+   Copyright (C) 1995-2014
+   Free Software Foundation, Inc.
 
    Written  by:
    Miguel de Icaza, 1995
@@ -38,6 +37,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 
 #include "lib/global.h"
 
@@ -55,7 +55,7 @@
 #include "src/history.h"        /* MC_HISTORY_SHARED_SEARCH */
 
 #include "dir.h"
-#include "cmd.h"                /* view_file_at_line */
+#include "cmd.h"                /* view_file_at_line() */
 #include "midnight.h"           /* current_panel */
 #include "boxes.h"
 #include "panelize.h"
@@ -65,6 +65,9 @@
 /*** global variables ****************************************************************************/
 
 /*** file scope macro definitions ****************************************************************/
+
+#define MAX_REFRESH_INTERVAL (G_USEC_PER_SEC / 20)      /* 50 ms */
+#define MIN_REFRESH_FILE_SIZE (256 * 1024)      /* 256 KB */
 
 /*** file scope type declarations ****************************************************************/
 
@@ -93,6 +96,7 @@ typedef struct
     gboolean file_pattern;
     gboolean find_recurs;
     gboolean skip_hidden;
+    gboolean only_directories;
     gboolean file_all_charsets;
 
     /* file content options */
@@ -110,6 +114,13 @@ typedef struct
 } find_file_options_t;
 
 /*** file scope variables ************************************************************************/
+
+/* Size of the find parameters window */
+#ifdef HAVE_CHARSET
+static int FIND_Y = 19;
+#else
+static int FIND_Y = 18;
+#endif
 
 /* button callbacks */
 static int start_stop (WButton * button, int action);
@@ -129,6 +140,7 @@ static WCheck *file_case_sens_cbox;     /* "case sensitive" checkbox */
 static WCheck *file_pattern_cbox;       /* File name is glob or regexp */
 static WCheck *recursively_cbox;
 static WCheck *skip_hidden_cbox;
+static WCheck *only_directories_cbox;
 static WCheck *content_use_cbox;        /* Take into account the Content field */
 static WCheck *content_case_sens_cbox;  /* "case sensitive" checkbox */
 static WCheck *content_regexp_cbox;     /* "find regular expression" checkbox */
@@ -148,6 +160,8 @@ static char *content_pattern = NULL;    /* pattern to search inside files; if
 static unsigned long matches;   /* Number of matches */
 static gboolean is_start = FALSE;       /* Status of the start/stop toggle button */
 static char *old_dir = NULL;
+
+static struct timeval last_refresh;
 
 /* Where did we stop */
 static gboolean resuming;
@@ -292,6 +306,8 @@ find_load_options (void)
     options.find_recurs = mc_config_get_bool (mc_main_config, "FindFile", "file_find_recurs", TRUE);
     options.skip_hidden =
         mc_config_get_bool (mc_main_config, "FindFile", "file_skip_hidden", FALSE);
+    options.only_directories =
+        mc_config_get_bool (mc_main_config, "FindFile", "file_only_directories", FALSE);
     options.file_all_charsets =
         mc_config_get_bool (mc_main_config, "FindFile", "file_all_charsets", FALSE);
     options.content_use = mc_config_get_bool (mc_main_config, "FindFile", "content_use", TRUE);
@@ -325,6 +341,7 @@ find_save_options (void)
     mc_config_set_bool (mc_main_config, "FindFile", "file_shell_pattern", options.file_pattern);
     mc_config_set_bool (mc_main_config, "FindFile", "file_find_recurs", options.find_recurs);
     mc_config_set_bool (mc_main_config, "FindFile", "file_skip_hidden", options.skip_hidden);
+    mc_config_set_bool (mc_main_config, "FindFile", "file_only_directories", options.only_directories);
     mc_config_set_bool (mc_main_config, "FindFile", "file_all_charsets", options.file_all_charsets);
     mc_config_set_bool (mc_main_config, "FindFile", "content_use", options.content_use);
     mc_config_set_bool (mc_main_config, "FindFile", "content_case_sens", options.content_case_sens);
@@ -506,11 +523,12 @@ find_parameters (char **start_dir, ssize_t * start_dir_len,
     const char *file_name_label = N_("File name:");
     const char *file_recurs_label = N_("&Find recursively");
     const char *file_pattern_label = N_("&Using shell patterns");
+    const char *file_skip_hidden_label = N_("S&kip hidden");
+    const char *file_only_directories_label = N_("Only &directories");
 #ifdef HAVE_CHARSET
     const char *file_all_charsets_label = N_("&All charsets");
 #endif
     const char *file_case_label = N_("Cas&e sensitive");
-    const char *file_skip_hidden_label = N_("S&kip hidden");
 
     /* file content */
     const char *content_content_label = N_("Content:");
@@ -540,6 +558,8 @@ find_parameters (char **start_dir, ssize_t * start_dir_len,
         file_name_label = _(file_name_label);
         file_recurs_label = _(file_recurs_label);
         file_pattern_label = _(file_pattern_label);
+        file_skip_hidden_label = _(file_skip_hidden_label);
+		file_only_directories_label = _(file_only_directories_label);
 #ifdef HAVE_CHARSET
         file_all_charsets_label = _(file_all_charsets_label);
 #endif
@@ -651,6 +671,12 @@ find_parameters (char **start_dir, ssize_t * start_dir_len,
     content_use_cbox = check_new (y2++, x2, options.content_use, content_use_label);
     add_widget (find_dlg, content_use_cbox);
 
+    int cbox_position;
+	cbox_position = FIND_Y - 5;
+
+    only_directories_cbox = check_new (cbox_position--, 3, options.only_directories, file_only_directories_label);
+    add_widget (find_dlg, only_directories_cbox);
+
     /* Continue 1st column */
     recursively_cbox = check_new (y1++, x1, options.find_recurs, file_recurs_label);
     add_widget (find_dlg, recursively_cbox);
@@ -753,6 +779,7 @@ find_parameters (char **start_dir, ssize_t * start_dir_len,
             options.file_pattern = file_pattern_cbox->state & C_BOOL;
             options.file_case_sens = file_case_sens_cbox->state & C_BOOL;
             options.skip_hidden = skip_hidden_cbox->state & C_BOOL;
+            options.only_directories = only_directories_cbox->state & C_BOOL;
             options.ignore_dirs_enable = ignore_dirs_cbox->state & C_BOOL;
             g_free (options.ignore_dirs);
             options.ignore_dirs = g_strdup (in_ignore->buffer);
@@ -929,62 +956,6 @@ find_add_match (const char *dir, const char *file)
 }
 
 /* --------------------------------------------------------------------------------------------- */
-/**
- * get_line_at:
- *
- * Returns malloced null-terminated line from file file_fd.
- * Input is buffered in buf_size long buffer.
- * Current pos in buf is stored in pos.
- * n_read - number of read chars.
- * has_newline - is there newline ?
- */
-
-static char *
-get_line_at (int file_fd, char *buf, int buf_size, int *pos, int *n_read, gboolean * has_newline)
-{
-    char *buffer = NULL;
-    int buffer_size = 0;
-    char ch = 0;
-    int i = 0;
-
-    while (TRUE)
-    {
-        if (*pos >= *n_read)
-        {
-            *pos = 0;
-            *n_read = mc_read (file_fd, buf, buf_size);
-            if (*n_read <= 0)
-                break;
-        }
-
-        ch = buf[(*pos)++];
-        if (ch == '\0')
-        {
-            /* skip possible leading zero(s) */
-            if (i == 0)
-                continue;
-            break;
-        }
-
-        if (i >= buffer_size - 1)
-            buffer = g_realloc (buffer, buffer_size += 80);
-
-        /* Strip newline */
-        if (ch == '\n')
-            break;
-
-        buffer[i++] = ch;
-    }
-
-    *has_newline = (ch != '\0');
-
-    if (buffer != NULL)
-        buffer[i] = '\0';
-
-    return buffer;
-}
-
-/* --------------------------------------------------------------------------------------------- */
 
 static FindProgressStatus
 check_find_events (WDialog * h)
@@ -1028,10 +999,14 @@ static gboolean
 search_content (WDialog * h, const char *directory, const char *filename)
 {
     struct stat s;
-    char buffer[BUF_4K];
+    char buffer[BUF_4K];        /* raw input buffer */
     int file_fd;
     gboolean ret_val = FALSE;
     vfs_path_t *vpath;
+    struct timeval tv;
+    time_t seconds;
+    suseconds_t useconds;
+    gboolean status_updated = FALSE;
 
     vpath = vfs_path_build_filename (directory, filename, (char *) NULL);
 
@@ -1047,10 +1022,29 @@ search_content (WDialog * h, const char *directory, const char *filename)
     if (file_fd == -1)
         return FALSE;
 
-    g_snprintf (buffer, sizeof (buffer), _("Grepping in %s"), filename);
-    status_update (str_trunc (buffer, WIDGET (h)->cols - 8));
+    /* get time elapsed from last refresh */
+    if (gettimeofday (&tv, NULL) == -1)
+    {
+        tv.tv_sec = 0;
+        tv.tv_usec = 0;
+        last_refresh = tv;
+    }
+    seconds = tv.tv_sec - last_refresh.tv_sec;
+    useconds = tv.tv_usec - last_refresh.tv_usec;
+    if (useconds < 0)
+    {
+        seconds--;
+        useconds += G_USEC_PER_SEC;
+    }
 
-    mc_refresh ();
+    if (s.st_size >= MIN_REFRESH_FILE_SIZE || seconds > 0 || useconds > MAX_REFRESH_INTERVAL)
+    {
+        g_snprintf (buffer, sizeof (buffer), _("Grepping in %s"), filename);
+        status_update (str_trunc (buffer, WIDGET (h)->cols - 8));
+        mc_refresh ();
+        last_refresh = tv;
+        status_updated = TRUE;
+    }
 
     tty_enable_interrupt_key ();
     tty_got_interrupt ();
@@ -1059,11 +1053,11 @@ search_content (WDialog * h, const char *directory, const char *filename)
         int line = 1;
         int pos = 0;
         int n_read = 0;
-        gboolean has_newline;
-        char *p = NULL;
         gboolean found = FALSE;
         gsize found_len;
         char result[BUF_MEDIUM];
+        char *strbuf = NULL;    /* buffer for fetched string */
+        int strbuf_size = 0;
 
         if (resuming)
         {
@@ -1072,25 +1066,81 @@ search_content (WDialog * h, const char *directory, const char *filename)
             line = last_line;
             pos = last_pos;
         }
-        while (!ret_val
-               && (p = get_line_at (file_fd, buffer, sizeof (buffer),
-                                    &pos, &n_read, &has_newline)) != NULL)
+
+        while (!ret_val)
         {
-            if (!found          /* Search in binary line once */
-                && mc_search_run (search_content_handle,
-                                  (const void *) p, 0, strlen (p), &found_len))
+            char ch = '\0';
+            int i = 0;
+
+            /* read to buffer and get line from there */
+            while (TRUE)
             {
+                if (pos >= n_read)
+                {
+                    pos = 0;
+                    n_read = mc_read (file_fd, buffer, sizeof (buffer));
+                    if (n_read <= 0)
+                        break;
+                }
+
+                ch = buffer[pos++];
+                if (ch == '\0')
+                {
+                    /* skip possible leading zero(s) */
+                    if (i == 0)
+                        continue;
+                    break;
+                }
+
+                if (i >= strbuf_size - 1)
+                {
+                    strbuf_size += 128;
+                    strbuf = g_realloc (strbuf, strbuf_size);
+                }
+
+                /* Strip newline */
+                if (ch == '\n')
+                    break;
+
+                strbuf[i++] = ch;
+            }
+
+            if (i == 0)
+            {
+                if (ch == '\0')
+                    break;
+
+                /* if (ch == '\n'): do not search in empty strings */
+                goto skip_search;
+            }
+
+            strbuf[i] = '\0';
+
+            if (!found          /* Search in binary line once */
+                && mc_search_run (search_content_handle, (const void *) strbuf, 0, i, &found_len))
+            {
+                if (!status_updated)
+                {
+                    /* if we add results for a file, we have to ensure that
+                       name of this file is shown in status bar */
+                    g_snprintf (result, sizeof (result), _("Grepping in %s"), filename);
+                    status_update (str_trunc (result, WIDGET (h)->cols - 8));
+                    mc_refresh ();
+                    last_refresh = tv;
+                    status_updated = TRUE;
+                }
+
                 g_snprintf (result, sizeof (result), "%d:%s", line, filename);
                 find_add_match (directory, result);
                 found = TRUE;
             }
-            g_free (p);
 
             if (found && options.content_first_hit)
                 break;
 
-            if (has_newline)
+            if (ch == '\n')
             {
+              skip_search:
                 found = FALSE;
                 line++;
             }
@@ -1116,7 +1166,10 @@ search_content (WDialog * h, const char *directory, const char *filename)
                 }
             }
         }
+
+        g_free (strbuf);
     }
+
     tty_disable_interrupt_key ();
     mc_close (file_fd);
     return ret_val;
@@ -1317,6 +1370,9 @@ do_search (WDialog * h)
         if (!(options.skip_hidden && (dp->d_name[0] == '.')))
         {
             gboolean search_ok;
+	    gboolean is_dir;
+
+	    is_dir = FALSE;
 
             if ((subdirs_left != 0) && options.find_recurs && (directory != NULL))
             {                   /* Can directory be NULL ? */
@@ -1331,6 +1387,7 @@ do_search (WDialog * h)
 
                     if (mc_lstat (tmp_vpath, &tmp_stat) == 0 && S_ISDIR (tmp_stat.st_mode))
                     {
+			is_dir = TRUE;
                         push_directory (tmp_vpath);
                         subdirs_left--;
                     }
@@ -1342,7 +1399,7 @@ do_search (WDialog * h)
             search_ok = mc_search_run (search_file_handle, dp->d_name,
                                        0, strlen (dp->d_name), &bytes_found);
 
-            if (search_ok)
+            if (search_ok && (!options.only_directories || is_dir))
             {
                 if (content_pattern == NULL)
                     find_add_match (directory, dp->d_name);
@@ -1401,9 +1458,9 @@ find_do_view_edit (gboolean unparsed_view, gboolean edit, char *dir, char *file)
 
     fullname_vpath = vfs_path_build_filename (dir, filename, (char *) NULL);
     if (edit)
-        do_edit_at_line (fullname_vpath, use_internal_edit, line);
+        edit_file_at_line (fullname_vpath, use_internal_edit != 0, line);
     else
-        view_file_at_line (fullname_vpath, unparsed_view ? 1 : 0, use_internal_view, line);
+        view_file_at_line (fullname_vpath, unparsed_view, use_internal_view != 0, line);
     vfs_path_free (fullname_vpath);
     g_free (fullname);
 }
@@ -1710,7 +1767,8 @@ do_find (const char *start_dir, ssize_t start_dir_len, const char *ignore_dirs,
 
         dir_list_init (list);
 
-        for (i = 0, entry = find_list->list; entry != NULL; i++, entry = g_list_next (entry))
+        for (i = 0, entry = listbox_get_first_link (find_list); entry != NULL;
+             i++, entry = g_list_next (entry))
         {
             const char *lc_filename = NULL;
             WLEntry *le = LENTRY (entry->data);
@@ -1816,6 +1874,9 @@ find_file (void)
 
         if (pattern[0] == '\0')
             break;              /* nothing search */
+
+        last_refresh.tv_sec = 0;
+        last_refresh.tv_usec = 0;
 
         dirname = filename = NULL;
         is_start = FALSE;

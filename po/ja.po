@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Slava Zanko <slavazanko@gmail.com>, 2011
 # Tadashi "ELF" Jokagi <elf@poyo.jp>, 2012
@@ -11,14 +11,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Midnight Commander\n"
 "Report-Msgid-Bugs-To: http://www.midnight-commander.org/\n"
-"POT-Creation-Date: 2013-10-04 09:49+0400\n"
+"POT-Creation-Date: 2014-02-28 13:29+0400\n"
 "PO-Revision-Date: 2013-11-20 12:28+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
-"Language-Team: Japanese (http://www.transifex.com/projects/p/mc/language/ja/)\n"
+"Language-Team: Japanese (http://www.transifex.com/projects/p/mc/language/"
+"ja/)\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 msgid "Warning: cannot load codepages list"
@@ -56,7 +57,10 @@ msgid ""
 "File \"%s\" is already being edited.\n"
 "User: %s\n"
 "Process ID: %d"
-msgstr "ファイル「%s」は既に編集を始めています。\nユーザー: %s\nプロセス ID: %d"
+msgstr ""
+"ファイル「%s」は既に編集を始めています。\n"
+"ユーザー: %s\n"
+"プロセス ID: %d"
 
 msgid "File locked"
 msgstr "ファイルがロックされています"
@@ -124,13 +128,17 @@ msgstr ""
 msgid ""
 "Unable to load '%s' skin.\n"
 "Default skin has been loaded"
-msgstr "スキン '%s' をロードできませんでした。\nデフォルトのスキンがロードされます。"
+msgstr ""
+"スキン '%s' をロードできませんでした。\n"
+"デフォルトのスキンがロードされます。"
 
 #, c-format
 msgid ""
 "Unable to parse '%s' skin.\n"
 "Default skin has been loaded"
-msgstr "スキン '%s' を正しくパースできません。\nデフォルトのスキンがロードされます。"
+msgstr ""
+"スキン '%s' を正しくパースできません。\n"
+"デフォルトのスキンがロードされます。"
 
 #, c-format
 msgid ""
@@ -138,6 +146,10 @@ msgid ""
 "on non-256 colors terminal.\n"
 "Default skin has been loaded"
 msgstr ""
+
+#, fuzzy
+msgid "Escape"
+msgstr "エスケープ キー"
 
 msgid "Function key 1"
 msgstr "Function キー 1"
@@ -199,59 +211,67 @@ msgstr "Function キー 19"
 msgid "Function key 20"
 msgstr "Function キー 20"
 
-msgid "Backspace key"
+msgid "Completion/M-tab"
+msgstr "Completion/M-tab"
+
+msgid "BackTab/S-tab"
+msgstr ""
+
+#, fuzzy
+msgid "Backspace"
 msgstr "Backspaece キー"
+
+#, fuzzy
+msgid "Up arrow"
+msgstr "上矢印"
+
+#, fuzzy
+msgid "Down arrow"
+msgstr "下矢印"
+
+#, fuzzy
+msgid "Left arrow"
+msgstr "左矢印"
+
+#, fuzzy
+msgid "Right arrow"
+msgstr "右矢印"
+
+#, fuzzy
+msgid "Insert"
+msgstr "挿入(&I)"
+
+#, fuzzy
+msgid "Delete"
+msgstr "削除(&D)"
+
+#, fuzzy
+msgid "Home"
+msgstr "Home キー"
 
 msgid "End key"
 msgstr "Endキー"
 
-msgid "Up arrow key"
-msgstr "上矢印"
-
-msgid "Down arrow key"
-msgstr "下矢印"
-
-msgid "Left arrow key"
-msgstr "左矢印"
-
-msgid "Right arrow key"
-msgstr "右矢印"
-
-msgid "Home key"
-msgstr "Home キー"
-
-msgid "Page Down key"
-msgstr "PageDownキー"
-
-msgid "Page Up key"
+#, fuzzy
+msgid "Page Up"
 msgstr "PageUp キー"
 
-msgid "Insert key"
-msgstr "Insert キー"
+#, fuzzy
+msgid "Page Down"
+msgstr "PageDownキー"
 
-msgid "Delete key"
-msgstr "Delete キー"
-
-msgid "Completion/M-tab"
-msgstr "Completion/M-tab"
-
-msgid "Back Tabulation S-tab"
-msgstr ""
-
-msgid "+ on keypad"
+#, fuzzy
+msgid "/ on keypad"
 msgstr "10キーの +"
-
-msgid "- on keypad"
-msgstr "10キーの -"
-
-msgid "Slash on keypad"
-msgstr "10キーの /"
 
 msgid "* on keypad"
 msgstr "10キーの *"
 
-msgid "Escape key"
-msgstr "エスケープ キー"
+msgid "- on keypad"
+msgstr "10キーの -"
+
+msgid "+ on keypad"
+msgstr "10キーの +"
 
 msgid "Left arrow keypad"
 msgstr "10キーの 左矢印"
@@ -304,14 +324,14 @@ msgstr "A1 キー"
 msgid "C1 key"
 msgstr "C1 キー"
 
-msgid "Plus"
-msgstr "プラス"
+msgid "Asterisk"
+msgstr "アスタリスク"
 
 msgid "Minus"
 msgstr "マイナス"
 
-msgid "Asterisk"
-msgstr "アスタリスク"
+msgid "Plus"
+msgstr "プラス"
 
 msgid "Dot"
 msgstr "ドット"
@@ -426,7 +446,9 @@ msgstr "環境変数 TERM がセットされていません\n"
 msgid ""
 "Screen size %dx%d is not supported.\n"
 "Check the TERM environment variable.\n"
-msgstr "スクリーンサイズ %dx%d はサポートされていません\nTERM環境変数の値をチェックしてください\n"
+msgstr ""
+"スクリーンサイズ %dx%d はサポートされていません\n"
+"TERM環境変数の値をチェックしてください\n"
 
 msgid "Warning"
 msgstr "警告"
@@ -891,7 +913,7 @@ msgstr ""
 msgid "Cannot open file for writing: %s"
 msgstr ""
 
-msgid "The file you are saving is not finished with a newline"
+msgid "The file you are saving does not end with a newline."
 msgstr ""
 
 msgid "C&ontinue"
@@ -1440,7 +1462,7 @@ msgid ""
 "written for the Midnight Commander."
 msgstr ""
 
-msgid "Copyright (C) 1996-2013 the Free Software Foundation"
+msgid "Copyright (C) 1996-2014 the Free Software Foundation"
 msgstr ""
 
 msgid "About"
@@ -1495,7 +1517,9 @@ msgstr "文法ファイルの読み込み"
 msgid ""
 "Cannot open file %s\n"
 "%s"
-msgstr "ファイル %s が開けません\n%s"
+msgstr ""
+"ファイル %s が開けません\n"
+"%s"
 
 #, c-format
 msgid "Error in file %s on line %d"
@@ -1547,7 +1571,9 @@ msgstr ""
 msgid ""
 "Cannot chmod \"%s\"\n"
 "%s"
-msgstr "chmod \"%s\" ができません\n%s"
+msgstr ""
+"chmod \"%s\" ができません\n"
+"%s"
 
 #, c-format
 msgid ""
@@ -1638,6 +1664,18 @@ msgstr "自動保存の設定(&U)"
 
 msgid "Configure options"
 msgstr "設定オプション"
+
+msgid "< Default >"
+msgstr ""
+
+msgid "Skins"
+msgstr ""
+
+msgid "Skin:"
+msgstr ""
+
+msgid "Appearance"
+msgstr ""
 
 msgid "Case &insensitive"
 msgstr ""
@@ -1739,8 +1777,7 @@ msgstr "反転(&R)"
 msgid "Sort order"
 msgstr "並び変える"
 
-#. TRANSLATORS: no need to translate 'Confirmation', it's just a context
-#. prefix
+#. TRANSLATORS: no need to translate 'Confirmation', it's just a context prefix
 msgid "Confirmation|&Delete"
 msgstr "確認 | 削除(&D)"
 
@@ -1782,9 +1819,6 @@ msgstr ""
 
 msgid "Input / display codepage:"
 msgstr "入力 / コードページを表示:"
-
-msgid "&Select"
-msgstr "選択(&S)"
 
 msgid "Directory tree"
 msgstr "ディレクトリーのツリー"
@@ -2116,7 +2150,9 @@ msgstr ""
 msgid ""
 "Cannot chdir to \"%s\"\n"
 "%s"
-msgstr "「%s」に移動できません\n%s"
+msgstr ""
+"「%s」に移動できません\n"
+"%s"
 
 msgid "Cannot read directory contents"
 msgstr ""
@@ -2169,8 +2205,8 @@ msgstr "ファイル操作|移動"
 msgid "FileOperation|Delete"
 msgstr "ファイル操作|削除"
 
-#, no-c-format
-msgid "%o %f \"%s\"%m"
+#, fuzzy, no-c-format
+msgid "%o %f%n\"%s\"%m"
 msgstr "%o %f \"%s\"%m"
 
 #, no-c-format
@@ -2195,13 +2231,6 @@ msgstr "files/directories"
 #. TRANSLATORS: keep leading space here to split words in Copy/Move dialog
 msgid " with source mask:"
 msgstr " with source mask:"
-
-msgid "to:"
-msgstr "to:"
-
-#, c-format
-msgid "%s?"
-msgstr "%s?"
 
 msgid "Cannot make the hardlink"
 msgstr "ハードリンクが作成できません"
@@ -2556,6 +2585,9 @@ msgstr "元"
 
 msgid "Target"
 msgstr "ターゲット"
+
+msgid "to:"
+msgstr "to:"
 
 msgid "Follow &links"
 msgstr ""
@@ -3025,6 +3057,10 @@ msgstr "パネルのオプション(&P)"
 msgid "C&onfirmation..."
 msgstr "確認(&O)..."
 
+#, fuzzy
+msgid "&Appearance..."
+msgstr "置換(&R)..."
+
 msgid "&Display bits..."
 msgstr "表示ビット数(&D)..."
 
@@ -3245,7 +3281,9 @@ msgstr "SUID と SGID のプログラムを検索"
 msgid ""
 "Cannot open the %s file for writing:\n"
 "%s\n"
-msgstr "書き出しのために %s をオープンすることができません:\n%s\n"
+msgstr ""
+"書き出しのために %s をオープンすることができません:\n"
+"%s\n"
 
 #, c-format
 msgid "Copy \"%s\" directory to:"
@@ -3284,7 +3322,9 @@ msgstr ""
 msgid ""
 "Cannot write to the %s file:\n"
 "%s\n"
-msgstr "ファイル %s に書き込めません:\n%s\n"
+msgstr ""
+"ファイル %s に書き込めません:\n"
+"%s\n"
 
 msgid "Debug"
 msgstr "デバッグ"
@@ -3308,7 +3348,9 @@ msgstr ""
 msgid ""
 "File %s is not owned by root or you or is world writable.\n"
 "Using it may compromise your security"
-msgstr "ファイル %s は root やあなたの所有物ではないのに誰でも書き込み\n可能です.利用するとあなたのセキュリティを侵害する恐れがあります"
+msgstr ""
+"ファイル %s は root やあなたの所有物ではないのに誰でも書き込み\n"
+"可能です.利用するとあなたのセキュリティを侵害する恐れがあります"
 
 msgid "Format error on file Extensions File"
 msgstr ""
@@ -3369,7 +3411,15 @@ msgid ""
 "\n"
 "If you want to escape, press a single Escape key\n"
 "and wait as well."
-msgstr "%s を押してこのメッセージが\n消えるのを待ってください。そ\nして、もう一度押してボタンの\n横に「良」が表示されるのを\n確認します。\n\n中止するにはエスケープキーを押して待ってく\nださい"
+msgstr ""
+"%s を押してこのメッセージが\n"
+"消えるのを待ってください。そ\n"
+"して、もう一度押してボタンの\n"
+"横に「良」が表示されるのを\n"
+"確認します。\n"
+"\n"
+"中止するにはエスケープキーを押して待ってく\n"
+"ださい"
 
 msgid "Cannot accept this key"
 msgstr ""
@@ -3385,7 +3435,9 @@ msgstr "良"
 msgid ""
 "It seems that all your keys already\n"
 "work fine. That's great."
-msgstr "すべてのキーは問題なさそうです。\nすばらしい"
+msgstr ""
+"すべてのキーは問題なさそうです。\n"
+"すばらしい"
 
 msgid "&Discard"
 msgstr "破棄(&D)"
@@ -3393,7 +3445,9 @@ msgstr "破棄(&D)"
 msgid ""
 "Great! You have a complete terminal database!\n"
 "All your keys work well."
-msgstr "すばらしい! ターミナルデータベースは完成しました!\nすべてのキーは動作します"
+msgstr ""
+"すばらしい! ターミナルデータベースは完成しました!\n"
+"すべてのキーは動作します"
 
 msgid ""
 "Press all the keys mentioned here. After you have done it, check\n"
@@ -3528,13 +3582,17 @@ msgstr "キャッシュのディレクトリー:"
 msgid ""
 "Cannot open cpio archive\n"
 "%s"
-msgstr "cpio アーカイブを開けません\n%s"
+msgstr ""
+"cpio アーカイブを開けません\n"
+"%s"
 
 #, c-format
 msgid ""
 "Premature end of cpio archive\n"
 "%s"
-msgstr "cpio アーカイブの終りが早すぎます\n%s"
+msgstr ""
+"cpio アーカイブの終りが早すぎます\n"
+"%s"
 
 #, c-format
 msgid ""
@@ -3542,7 +3600,10 @@ msgid ""
 "%s\n"
 "in cpio archive\n"
 "%s"
-msgstr "cpio アーカイブ内 %s のハードリンクが\n矛盾しています\n%s"
+msgstr ""
+"cpio アーカイブ内 %s のハードリンクが\n"
+"矛盾しています\n"
+"%s"
 
 #, c-format
 msgid "%s contains duplicate entries! Skipping!"
@@ -3558,13 +3619,17 @@ msgstr "%s の中で壊れた cpio ヘッダに遭遇した"
 msgid ""
 "Unexpected end of file\n"
 "%s"
-msgstr "予期しない EOF です\n%s"
+msgstr ""
+"予期しない EOF です\n"
+"%s"
 
 #, c-format
 msgid ""
 "Cannot open %s archive\n"
 "%s"
-msgstr "%s アーカイブを開くことが出来ません\n%s"
+msgstr ""
+"%s アーカイブを開くことが出来ません\n"
+"%s"
 
 msgid "Inconsistent extfs archive"
 msgstr "不整合な extfs アーカイブです"
@@ -3741,13 +3806,17 @@ msgstr ""
 msgid ""
 "Warning: Invalid line in %s:\n"
 "%s\n"
-msgstr "警告: %s に無効な行があります:\n%s\n"
+msgstr ""
+"警告: %s に無効な行があります:\n"
+"%s\n"
 
 #, c-format
 msgid ""
 "Warning: Invalid flag %c in %s:\n"
 "%s\n"
-msgstr "警告: %2$s に無効なフラグ %1$c があります:\n%3$s\n"
+msgstr ""
+"警告: %2$s に無効なフラグ %1$c があります:\n"
+"%3$s\n"
 
 #, c-format
 msgid "sftp: an error occurred while reading %s: %s"
@@ -3836,7 +3905,9 @@ msgstr ""
 msgid ""
 "Cannot open tar archive\n"
 "%s"
-msgstr "tarアーカイブ%sを\n開けません"
+msgstr ""
+"tarアーカイブ%sを\n"
+"開けません"
 
 msgid "Inconsistent tar archive"
 msgstr "tar アーカイブに不整合"
@@ -3996,7 +4067,9 @@ msgstr ""
 msgid ""
 "Cannot save file:\n"
 "%s"
-msgstr "ファイルの保存ができません:\n%s"
+msgstr ""
+"ファイルの保存ができません:\n"
+"%s"
 
 msgid "View: "
 msgstr ""
@@ -4005,7 +4078,9 @@ msgstr ""
 msgid ""
 "Cannot open \"%s\"\n"
 "%s"
-msgstr "「%s」を開けません\n%s"
+msgstr ""
+"「%s」を開けません\n"
+"%s"
 
 msgid "Cannot view: not a regular file"
 msgstr ""
@@ -4027,3 +4102,18 @@ msgstr "初めから続けますか?"
 
 msgid "Cannot fetch a local copy of /ftp://some.host/editme.txt"
 msgstr ""
+
+#~ msgid "&Select"
+#~ msgstr "選択(&S)"
+
+#~ msgid "Insert key"
+#~ msgstr "Insert キー"
+
+#~ msgid "Delete key"
+#~ msgstr "Delete キー"
+
+#~ msgid "Slash on keypad"
+#~ msgstr "10キーの /"
+
+#~ msgid "%s?"
+#~ msgstr "%s?"

@@ -1,8 +1,8 @@
 /*
    Search functions for diffviewer.
 
-   Copyright (C) 2010, 2011, 2012
-   The Free Software Foundation, Inc.
+   Copyright (C) 2010-2014
+   Free Software Foundation, Inc.
 
    Written by:
    Slava Zanko <slavazanko@gmail.com>, 2010.
