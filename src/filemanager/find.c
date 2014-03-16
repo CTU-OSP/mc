@@ -115,6 +115,13 @@ typedef struct
 
 /*** file scope variables ************************************************************************/
 
+/* Size of the find parameters window */
+#ifdef HAVE_CHARSET
+static int FIND_Y = 19;
+#else
+static int FIND_Y = 18;
+#endif
+
 /* button callbacks */
 static int start_stop (WButton * button, int action);
 static int find_do_view_file (WButton * button, int action);
@@ -665,7 +672,7 @@ find_parameters (char **start_dir, ssize_t * start_dir_len,
     add_widget (find_dlg, content_use_cbox);
 
     int cbox_position;
-	cbox__position = FIND_Y - 5;
+	cbox_position = FIND_Y - 5;
 
     only_directories_cbox = check_new (cbox_position--, 3, options.only_directories, file_only_directories_label);
     add_widget (find_dlg, only_directories_cbox);
