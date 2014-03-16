@@ -8,6 +8,8 @@ action=$1
 filetype=$2
 pager=$3
 
+[ -n "${MC_XDG_OPEN}" ] || MC_XDG_OPEN="xdg-open"
+
 get_unpacker() {
     filetype=$1
     case "${filetype}" in
@@ -38,7 +40,7 @@ do_view_action() {
 
     case "${filetype}" in
     man)
-        case "${MC_EXT_CURRENTDIR}"/"${MC_EXT_FILENAME}" in
+        case "${MC_EXT_FILENAME}" in
         */log/*|*/logs/*)
             cat "${MC_EXT_FILENAME}"
             ;;
@@ -57,7 +59,7 @@ do_view_action() {
         nroff -c -Tlatin1 -ms "${MC_EXT_FILENAME}"
         ;;
     man.gz|man.bz|man.bz2|man.lzma|man.xz)
-        case "${MC_EXT_CURRENTDIR}"/"${MC_EXT_FILENAME}" in
+        case "${MC_EXT_FILENAME}" in
         */log/*|*/logs/*)
             ${unpacker} "${MC_EXT_FILENAME}"
             ;;
@@ -82,7 +84,7 @@ do_open_action() {
         info -f "${MC_EXT_FILENAME}"
         ;;
     man)
-        case "${MC_EXT_CURRENTDIR}"/"${MC_EXT_FILENAME}" in
+        case "${MC_EXT_FILENAME}" in
         */log/*|*/logs/*)
             cat "${MC_EXT_FILENAME}"
             ;;
@@ -102,7 +104,7 @@ do_open_action() {
         nroff -c -Tlatin1 -ms "${MC_EXT_FILENAME}" | ${pager}
         ;;
     man.gz|man.bz|man.bz2|man.lzma|man.xz)
-        case "${MC_EXT_CURRENTDIR}"/"${MC_EXT_FILENAME}" in
+        case "${MC_EXT_FILENAME}" in
         */log/*|*/logs/*)
             ${unpacker} "${MC_EXT_FILENAME}"
             ;;
@@ -131,7 +133,7 @@ view)
     do_view_action "${filetype}"
     ;;
 open)
-    xdg-open "${MC_EXT_FILENAME}" 2>/dev/null || \
+    "${MC_XDG_OPEN}" "${MC_EXT_FILENAME}" 2>/dev/null || \
         do_open_action "${filetype}" "${pager}"
     ;;
 *)

@@ -6,12 +6,14 @@
 action=$1
 filetype=$2
 
+[ -n "${MC_XDG_OPEN}" ] || MC_XDG_OPEN="xdg-open"
+
 do_view_action() {
     filetype=$1
 
     case "${filetype}" in
     iso9660)
-        isoinfo -l -i "${MC_EXT_FILENAME}"
+         isoinfo -d -i "${MC_EXT_FILENAME}" && isoinfo -l -i "${MC_EXT_FILENAME}"
         ;;
     cat)
         /bin/cat "${MC_EXT_FILENAME}" 2>/dev/null
@@ -20,8 +22,8 @@ do_view_action() {
         file "${MC_EXT_FILENAME}" && nm -C "${MC_EXT_FILENAME}"
         ;;
     lib)
-        gplib -t "${MC_EXT_FILENAME}" || >&2 | \
-            /usr/bin/perl -e '@a=split /[\s\t]+/, <>; printf ("%-30s | %10d | %s.%s.%02d | %s\n", $a[0], ($a[1]*1),$a[7], lc($a[4]), $a[5], $a[6]);'
+        gplib -t "${MC_EXT_FILENAME}" | \
+            /usr/bin/perl -e 'while (<>) { @a=split /[\s\t]+/, $_; printf ("%-30s | %10d | %s.%s.%02d | %s\n", $a[0], ($a[1]*1),$a[7], lc($a[4]), $a[5], $a[6]);}'
         ;;
     so)
         file "${MC_EXT_FILENAME}" && nm -C -D "${MC_EXT_FILENAME}"
@@ -86,7 +88,7 @@ view)
     do_view_action "${filetype}"
     ;;
 open)
-    xdg-open "${MC_EXT_FILENAME}" 2>/dev/null || \
+    "${MC_XDG_OPEN}" "${MC_EXT_FILENAME}" 2>/dev/null || \
         do_open_action "${filetype}"
     ;;
 *)

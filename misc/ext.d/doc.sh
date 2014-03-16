@@ -6,6 +6,7 @@
 action=$1
 filetype=$2
 
+[ -n "${MC_XDG_OPEN}" ] || MC_XDG_OPEN="xdg-open"
 
 STAROFFICE_REGEXP='\.(sxw|sdw|stw|sxc|stc|sxi|sti|sxd|std||sxm||sxg)$'
 
@@ -148,10 +149,10 @@ do_open_action() {
     msppt)
         if [ -n "$DISPLAY" ]; then
             OOFFICE=`get_ooffice_executable`
-            (${OOFFICE} %f >/dev/null 2>&1 &)
+            (${OOFFICE} "${MC_EXT_FILENAME}" >/dev/null 2>&1 &)
         else
             tmp=`mktemp -d ${TMPDIR:-/tmp}/%p.XXXXXX`
-            ppthtml %f > "$tmp/page.html"
+            ppthtml "${MC_EXT_FILENAME}" > "$tmp/page.html"
             elinks "$tmp/page.html"
             rm -rf "$tmp"
         fi
@@ -186,7 +187,7 @@ view)
     do_view_action "${filetype}"
     ;;
 open)
-    xdg-open "${MC_EXT_FILENAME}" 2>/dev/null || \
+    "${MC_XDG_OPEN}" "${MC_EXT_FILENAME}" 2>/dev/null || \
         do_open_action "${filetype}"
     ;;
 *)
