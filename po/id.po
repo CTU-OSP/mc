@@ -1,21 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Andika Triwidada <andika@gmail.com>, 2011-2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Midnight Commander\n"
 "Report-Msgid-Bugs-To: http://www.midnight-commander.org/\n"
-"POT-Creation-Date: 2013-10-04 09:49+0400\n"
+"POT-Creation-Date: 2014-02-11 15:14+0400\n"
 "PO-Revision-Date: 2013-11-20 12:28+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
-"Language-Team: Indonesian (http://www.transifex.com/projects/p/mc/language/id/)\n"
+"Language-Team: Indonesian (http://www.transifex.com/projects/p/mc/language/"
+"id/)\n"
+"Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: id\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 msgid "Warning: cannot load codepages list"
@@ -53,7 +54,10 @@ msgid ""
 "File \"%s\" is already being edited.\n"
 "User: %s\n"
 "Process ID: %d"
-msgstr "Berkas \"%s\" sedang disunting.\nPengguna: %s\nID Proses: %d"
+msgstr ""
+"Berkas \"%s\" sedang disunting.\n"
+"Pengguna: %s\n"
+"ID Proses: %d"
 
 msgid "File locked"
 msgstr "Berkas dikunci"
@@ -121,13 +125,17 @@ msgstr ""
 msgid ""
 "Unable to load '%s' skin.\n"
 "Default skin has been loaded"
-msgstr "Tak bisa memuat skin '%s'.\nSkin bawaan telah dimuat."
+msgstr ""
+"Tak bisa memuat skin '%s'.\n"
+"Skin bawaan telah dimuat."
 
 #, c-format
 msgid ""
 "Unable to parse '%s' skin.\n"
 "Default skin has been loaded"
-msgstr "Tak bisa mengurai skin '%s'.\nSkin bawaan telah dimuat."
+msgstr ""
+"Tak bisa mengurai skin '%s'.\n"
+"Skin bawaan telah dimuat."
 
 #, c-format
 msgid ""
@@ -135,6 +143,10 @@ msgid ""
 "on non-256 colors terminal.\n"
 "Default skin has been loaded"
 msgstr ""
+
+#, fuzzy
+msgid "Escape"
+msgstr "Tombol escape"
 
 msgid "Function key 1"
 msgstr "Tombol fungsi 1"
@@ -196,59 +208,67 @@ msgstr "Tombol fungsi 19"
 msgid "Function key 20"
 msgstr "Tombol fungsi 20"
 
-msgid "Backspace key"
+msgid "Completion/M-tab"
+msgstr ""
+
+msgid "BackTab/S-tab"
+msgstr ""
+
+#, fuzzy
+msgid "Backspace"
 msgstr "Tombol backspace"
+
+#, fuzzy
+msgid "Up arrow"
+msgstr "Tombol panah atas"
+
+#, fuzzy
+msgid "Down arrow"
+msgstr "Tombol panah bawah"
+
+#, fuzzy
+msgid "Left arrow"
+msgstr "Tombol panah kiri"
+
+#, fuzzy
+msgid "Right arrow"
+msgstr "Tombol panah kanan"
+
+#, fuzzy
+msgid "Insert"
+msgstr "Tombol insert"
+
+#, fuzzy
+msgid "Delete"
+msgstr "Tombol delete"
+
+#, fuzzy
+msgid "Home"
+msgstr "Tombol home"
 
 msgid "End key"
 msgstr "Tombol end"
 
-msgid "Up arrow key"
-msgstr "Tombol panah atas"
-
-msgid "Down arrow key"
-msgstr "Tombol panah bawah"
-
-msgid "Left arrow key"
-msgstr "Tombol panah kiri"
-
-msgid "Right arrow key"
-msgstr "Tombol panah kanan"
-
-msgid "Home key"
-msgstr "Tombol home"
-
-msgid "Page Down key"
-msgstr "Tombol Page Down"
-
-msgid "Page Up key"
+#, fuzzy
+msgid "Page Up"
 msgstr "Tombol Page Up"
 
-msgid "Insert key"
-msgstr "Tombol insert"
+#, fuzzy
+msgid "Page Down"
+msgstr "Tombol Page Down"
 
-msgid "Delete key"
-msgstr "Tombol delete"
-
-msgid "Completion/M-tab"
-msgstr ""
-
-msgid "Back Tabulation S-tab"
-msgstr ""
-
-msgid "+ on keypad"
+#, fuzzy
+msgid "/ on keypad"
 msgstr "+ pada keypad"
-
-msgid "- on keypad"
-msgstr "- pada keypad"
-
-msgid "Slash on keypad"
-msgstr "Garis miring pada keypad"
 
 msgid "* on keypad"
 msgstr "* pada keypad"
 
-msgid "Escape key"
-msgstr "Tombol escape"
+msgid "- on keypad"
+msgstr "- pada keypad"
+
+msgid "+ on keypad"
+msgstr "+ pada keypad"
 
 msgid "Left arrow keypad"
 msgstr "Panah kiri keypad"
@@ -301,14 +321,14 @@ msgstr "Tombol A1"
 msgid "C1 key"
 msgstr "Tombol C1"
 
-msgid "Plus"
-msgstr "Plus"
+msgid "Asterisk"
+msgstr "Asterisk"
 
 msgid "Minus"
 msgstr "Minus"
 
-msgid "Asterisk"
-msgstr "Asterisk"
+msgid "Plus"
+msgstr "Plus"
 
 msgid "Dot"
 msgstr "Dot"
@@ -423,7 +443,9 @@ msgstr ""
 msgid ""
 "Screen size %dx%d is not supported.\n"
 "Check the TERM environment variable.\n"
-msgstr "Ukuran layar %dx%d tak didukung.\nPeriksalah variabel lingkungan TERM.\n"
+msgstr ""
+"Ukuran layar %dx%d tak didukung.\n"
+"Periksalah variabel lingkungan TERM.\n"
 
 msgid "Warning"
 msgstr "Peringatan"
@@ -1437,7 +1459,7 @@ msgid ""
 "written for the Midnight Commander."
 msgstr ""
 
-msgid "Copyright (C) 1996-2013 the Free Software Foundation"
+msgid "Copyright (C) 1996-2014 the Free Software Foundation"
 msgstr ""
 
 msgid "About"
@@ -1636,6 +1658,18 @@ msgstr ""
 msgid "Configure options"
 msgstr ""
 
+msgid "< Default >"
+msgstr ""
+
+msgid "Skins"
+msgstr ""
+
+msgid "Skin:"
+msgstr ""
+
+msgid "Appearance"
+msgstr ""
+
 msgid "Case &insensitive"
 msgstr ""
 
@@ -1736,8 +1770,7 @@ msgstr ""
 msgid "Sort order"
 msgstr ""
 
-#. TRANSLATORS: no need to translate 'Confirmation', it's just a context
-#. prefix
+#. TRANSLATORS: no need to translate 'Confirmation', it's just a context prefix
 msgid "Confirmation|&Delete"
 msgstr ""
 
@@ -2167,7 +2200,7 @@ msgid "FileOperation|Delete"
 msgstr ""
 
 #, no-c-format
-msgid "%o %f \"%s\"%m"
+msgid "%o %f%n\"%s\"%m"
 msgstr ""
 
 #, no-c-format
@@ -2191,13 +2224,6 @@ msgstr ""
 
 #. TRANSLATORS: keep leading space here to split words in Copy/Move dialog
 msgid " with source mask:"
-msgstr ""
-
-msgid "to:"
-msgstr ""
-
-#, c-format
-msgid "%s?"
 msgstr ""
 
 msgid "Cannot make the hardlink"
@@ -2552,6 +2578,9 @@ msgid "Source"
 msgstr ""
 
 msgid "Target"
+msgstr ""
+
+msgid "to:"
 msgstr ""
 
 msgid "Follow &links"
@@ -3020,6 +3049,9 @@ msgid "&Panel options..."
 msgstr ""
 
 msgid "C&onfirmation..."
+msgstr ""
+
+msgid "&Appearance..."
 msgstr ""
 
 msgid "&Display bits..."
@@ -3525,13 +3557,17 @@ msgstr ""
 msgid ""
 "Cannot open cpio archive\n"
 "%s"
-msgstr "Tak bisa membuka arsip cpio\n%s"
+msgstr ""
+"Tak bisa membuka arsip cpio\n"
+"%s"
 
 #, c-format
 msgid ""
 "Premature end of cpio archive\n"
 "%s"
-msgstr "Akhir dini dari arsip cpio\n%s"
+msgstr ""
+"Akhir dini dari arsip cpio\n"
+"%s"
 
 #, c-format
 msgid ""
@@ -4024,3 +4060,6 @@ msgstr ""
 
 msgid "Cannot fetch a local copy of /ftp://some.host/editme.txt"
 msgstr ""
+
+#~ msgid "Slash on keypad"
+#~ msgstr "Garis miring pada keypad"

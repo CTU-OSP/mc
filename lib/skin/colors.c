@@ -2,7 +2,7 @@
    Skins engine.
    Work with colors
 
-   Copyright (C) 2009, 2010, 2011, 2012
+   Copyright (C) 2009-2014
    The Free Software Foundation, Inc.
 
    Written by:
@@ -178,6 +178,7 @@ mc_skin_color_set_default_for_terminal (mc_skin_t * mc_skin)
 }
 
 /* --------------------------------------------------------------------------------------------- */
+
 static void
 mc_skin_color_cache_init (void)
 {

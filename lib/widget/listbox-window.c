@@ -1,8 +1,7 @@
 /*
    Widget based utility functions.
 
-   Copyright (C) 1994, 1995, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
-   2005, 2006, 2007, 2008, 2009, 2010, 2011, 2013
+   Copyright (C) 1994-2014
    The Free Software Foundation, Inc.
 
    Authors:
@@ -60,14 +59,6 @@ Listbox *
 create_listbox_window_centered (int center_y, int center_x, int lines, int cols,
                                 const char *title, const char *help)
 {
-    const dlg_colors_t listbox_colors = {
-        PMENU_ENTRY_COLOR,
-        PMENU_SELECTED_COLOR,
-        PMENU_ENTRY_COLOR,
-        PMENU_SELECTED_COLOR,
-        PMENU_TITLE_COLOR
-    };
-
     const int space = 4;
 
     int xpos, ypos;
